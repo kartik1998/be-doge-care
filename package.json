@@ -2,8 +2,10 @@
   "name": "be-doge-care",
   "version": "1.0.0",
   "description": "doge-care backend ",
-  "main": "index.js",
+  "main": "bin/www",
   "scripts": {
+    "start": "node bin/www",
+    "dev": "nodemon bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
