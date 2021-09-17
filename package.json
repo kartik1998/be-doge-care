@@ -1,0 +1,22 @@
+{
+  "name": "be-doge-care",
+  "version": "1.0.0",
+  "description": "doge-care backend ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kartik1998/be-doge-care.git"
+  },
+  "keywords": [
+    "dapp"
+  ],
+  "author": "Kartik Rawat",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/kartik1998/be-doge-care/issues"
+  },
+  "homepage": "https://github.com/kartik1998/be-doge-care#readme"
+}
