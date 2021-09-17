@@ -18,5 +18,16 @@
   "bugs": {
     "url": "https://github.com/kartik1998/be-doge-care/issues"
   },
-  "homepage": "https://github.com/kartik1998/be-doge-care#readme"
+  "homepage": "https://github.com/kartik1998/be-doge-care#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.24.2",
+    "nodemon": "^2.0.12"
+  }
 }
