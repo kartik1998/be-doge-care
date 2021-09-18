@@ -20,6 +20,23 @@ class JobService {
     return job;
   }
 
+  static async updateJobState(state, jobId) {
+    let job;
+    try {
+      job = await Job.findOne({ _id: jobId });
+    } catch (err) {
+      throwError(codes.NOTFOUND, `job with id ${jobId} not found`);
+    }
+    if (!job) return throwError(codes.NOTFOUND, `job with id: ${jobId} not found`);
+    const jobState = job.state.toString();
+    if (jobState === 'completed' || jobState === 'cancelled') {
+      return throwError(codes.INVALIDREQ, `can't change ${state} state`);
+    }
+    job.state = state;
+    await job.save();
+    return job;
+  }
+
   static async createJob(userId, petName, petType, extraJobDetails = {}) {
     const user = await User.findOne({ _id: userId }); // eslint-disable-line no-underscore-dangle
     if (!user) return throwError(codes.NOTFOUND, `user with id: ${userId} not found`);
