@@ -14,4 +14,12 @@ const decodeJwtToken = (token) => {
   }
 };
 
-module.exports = { computeSHA256Hash, computeJwtToken, decodeJwtToken };
+const throwError = (code = 500, message = 'internal server error') => {
+  const err = new Error(message);
+  err.code = code;
+  throw err;
+};
+
+module.exports = {
+  computeSHA256Hash, computeJwtToken, decodeJwtToken, throwError,
+};
