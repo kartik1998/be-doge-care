@@ -11,6 +11,7 @@ class UserService {
     const data = decodeJwtToken(token);
     if (data instanceof Error) return throwError(codes.UNAUTHORISED, data.message);
     const { userName } = data.data;
+    if (!userName) return throwError(codes.NOTFOUND, 'malformed jwt');
     const user = await User.findOne({ userName }).select('-password').exec();
     if (!user) return throwError(codes.NOTFOUND, `${userName} not found`);
     return user;
