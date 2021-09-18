@@ -9,20 +9,27 @@ class JobService {
     return Job.find({ state });
   }
 
+  static async placeJobBid(sitterId, jobId) {
+    const data = await Promise.all([Job.findOne({ _id: jobId }), User.findOne({ _id: sitterId })]);
+    const job = data[0];
+    const sitter = data[1];
+    if (!job || !sitter) return throwError(codes.NOTFOUND, 'invalid job or sitterid');
+    if (sitterId === job.creatorId.toString()) return throwError(codes.NOTALLOWED, 'job creator cannot take the job');
+    job.sitterBids.push(sitterId);
+    await job.save();
+    return job;
+  }
+
   static async createJob(userId, petName, petType, extraJobDetails = {}) {
-    try {
-      const user = await User.findOne({ _id: userId }); // eslint-disable-line no-underscore-dangle
-      if (!user) return throwError(codes.NOTFOUND, `user with id: ${userId} not found`);
-      const job = await Job.create({
-        creatorId: userId,
-        jobDetails: { petName, petType, extraDetails: extraJobDetails },
-      });
-      user.createdJobs.push(job._id); // eslint-disable-line no-underscore-dangle
-      await user.save(); // add job in user's created jobs array
-      return job;
-    } catch (err) {
-      return throwError(codes.NOTFOUND, `user with id: ${userId} not found or invalid userId`);
-    }
+    const user = await User.findOne({ _id: userId }); // eslint-disable-line no-underscore-dangle
+    if (!user) return throwError(codes.NOTFOUND, `user with id: ${userId} not found`);
+    const job = await Job.create({
+      creatorId: userId,
+      jobDetails: { petName, petType, extraDetails: extraJobDetails },
+    });
+    user.createdJobs.push(job._id); // eslint-disable-line no-underscore-dangle
+    await user.save(); // add job in user's created jobs array
+    return job;
   }
 
   static async selectSitter(jobId, sitterId) {
