@@ -16,8 +16,12 @@
 ├── README.md
 ├── app
 │   ├── database
-│   │   └── connection.js 
+│   │   └── connection.js
 │   ├── index.js
+│   ├── job
+│   │   ├── controller.js
+│   │   ├── model.js
+│   │   └── service.js
 │   ├── lib
 │   │   ├── apiout.js
 │   │   ├── statusCodes.js
@@ -29,6 +33,7 @@
 │   │   ├── index.js
 │   │   └── v1
 │   │       ├── index.js
+│   │       ├── job.js
 │   │       └── user.js
 │   └── user
 │       ├── controller.js
