@@ -1,5 +1,5 @@
-const User = require('./model');
 const { computeSHA256Hash } = require('@lib/utils');
+const User = require('./model');
 
 class UserService {
   static async registerUser(userName, name, password) {

@@ -24,6 +24,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "joi": "^17.4.2",
     "module-alias": "^2.2.2",
     "mongoose": "^6.0.6",
     "morgan": "^1.10.0",
@@ -41,6 +42,7 @@
     "@root": ".",
     "@app": "app",
     "@lib": "app/lib",
-    "@config": "config"
+    "@config": "config",
+    "@common": "app/routes/common"
   }
 }
