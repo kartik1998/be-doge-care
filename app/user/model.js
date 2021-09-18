@@ -20,6 +20,12 @@ const UserSchema = new mongoose.Schema({
       ref: 'Job',
     },
   ],
+  sitterJobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Job',
+    },
+  ],
   createdAt: {
     type: Date,
     default: new Date(),
