@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
-  delete obj.__v;
+  delete obj.__v; // eslint-disable-line no-underscore-dangle
   return obj;
 };
 

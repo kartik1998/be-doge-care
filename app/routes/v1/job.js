@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const JobController = require('@app/job/controller');
-// const { inputValidationMiddleware } = require('@common/middlewares');
-// const { userRegistrationSchema } = require('@lib/validation');
+const { inputValidationMiddleware } = require('@common/middlewares');
+const {
+  createJobSchema, selectSitterSchema, updateJobSchema, placeJobBidSchema,
+} = require('@lib/validation');
 
-router.post('/', JobController.createJob);
-router.put('/', JobController.updateJobState);
+router.post('/', inputValidationMiddleware(createJobSchema), JobController.createJob);
+router.put('/', inputValidationMiddleware(updateJobSchema), JobController.updateJobState);
 router.get('/', JobController.getJobs);
-router.post('/selectSitter', JobController.selectSitter);
-router.post('/placeBid', JobController.placeJobBid);
+router.post('/selectSitter', inputValidationMiddleware(selectSitterSchema), JobController.selectSitter);
+router.post('/placeBid', inputValidationMiddleware(placeJobBidSchema), JobController.placeJobBid);
 
 module.exports = router;
