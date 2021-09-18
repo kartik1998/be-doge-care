@@ -4,5 +4,6 @@ const JobController = require('@app/job/controller');
 // const { userRegistrationSchema } = require('@lib/validation');
 
 router.post('/', JobController.createJob);
+router.get('/', JobController.getJobs);
 
 module.exports = router;

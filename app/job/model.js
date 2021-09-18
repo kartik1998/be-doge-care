@@ -12,7 +12,7 @@ const JobSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    default: 'pending', // pending, active, completed, cancelled
+    default: 'pending', // pending, sitter_selected, active, completed, cancelled
   },
   jobDetails: {
     petName: {
