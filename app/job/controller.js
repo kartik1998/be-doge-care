@@ -13,6 +13,16 @@ class JobController {
     }
   }
 
+  static async selectSitter(req, res) {
+    const { jobId, sitterId } = req.body;
+    try {
+      const job = await JobService.selectSitter(jobId, sitterId);
+      return out.success(res, codes.SUCCESS, job);
+    } catch (err) {
+      return out.error(res, err.code, err.message);
+    }
+  }
+
   static async createJob(req, res) {
     const {
       userId, petName, petType, extraJobDetails,

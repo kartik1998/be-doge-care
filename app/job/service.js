@@ -24,6 +24,22 @@ class JobService {
       return throwError(codes.NOTFOUND, `user with id: ${userId} not found or invalid userId`);
     }
   }
+
+  static async selectSitter(jobId, sitterId) {
+    try {
+      const data = await Promise.all([Job.findOne({ _id: jobId }), User.findOne({ _id: sitterId })]);
+      const job = data[0];
+      const sitter = data[1];
+      if (!job || !sitter) return throwError(codes.NOTFOUND, 'invalid job or sitter id');
+      if (!job.sitterBids.includes(sitterId)) return throwError(codes.NOTALLOWED, `${sitterId} has not placed a bid to be the sitter for the job`);
+      job.state = 'sitter_selected';
+      job.selectedSitterId = sitter._id; // eslint-disable-line no-underscore-dangle
+      await job.save();
+      return job;
+    } catch (err) {
+      return throwError(codes.NOTFOUND, err.message);
+    }
+  }
 }
 
 module.exports = JobService;
