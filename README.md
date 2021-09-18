@@ -10,6 +10,10 @@
 
 - To setup the project ensure that the requirements are fulfilled and run `bash setup.sh`
 
+### API Reference :
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/6484dd9abc85ce665e50)
+
 ### Folder structure 
 
 ```
@@ -51,6 +55,3 @@
 └── setup.sh
 ```
 
-## API Reference :
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/6484dd9abc85ce665e50)
