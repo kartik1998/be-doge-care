@@ -46,7 +46,7 @@ class JobService {
       await sitter.save(); // add job in sitter's sitterJobs array
       return job;
     } catch (err) {
-      return throwError(codes.NOTFOUND, err.message);
+      return throwError(err.code || codes.NOTFOUND, err.message);
     }
   }
 }
