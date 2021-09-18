@@ -5,5 +5,6 @@ const { userRegistrationSchema } = require('@lib/validation');
 
 router.post('/', inputValidationMiddleware(userRegistrationSchema), UserController.registerUser);
 router.get('/login', UserController.loginViaJwtToken);
+router.post('/login', UserController.loginViaCredentials);
 
 module.exports = router;

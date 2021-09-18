@@ -23,7 +23,17 @@ class UserController {
       const user = await UserService.loginViaJwtToken(authtoken);
       return out.success(res, codes.SUCCESS, user);
     } catch (err) {
-      return out.error(res, err.code || codes.INTERNALERR, err.message || 'internal server error');
+      return out.error(res, err.code, err.message);
+    }
+  }
+
+  static async loginViaCredentials(req, res) {
+    const { userName, password } = req.body;
+    try {
+      const user = await UserService.loginViaCredentials(userName, password);
+      return out.success(res, codes.SUCCESS, user);
+    } catch (err) {
+      return out.error(res, err.code, err.message);
     }
   }
 }
