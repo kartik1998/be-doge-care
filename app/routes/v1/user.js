@@ -1,5 +1,6 @@
 const router = require('express').Router();
+const UserController = require('@app/user/controller');
 
-router.post('/', (req, res) => res.json({ msg: 'Sample routes' }));
+router.post('/', UserController.registerUser);
 
 module.exports = router;

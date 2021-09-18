@@ -72,7 +72,7 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `'pipe ${addr}` : `'port ${addr.port}`;
-  console.log(chalk.yellow(`Listening on ${bind}`)); // debug here
+  console.log(chalk.cyanBright(`Listening on ${bind}`)); // debug here
 }
 
 function shutDown() {
