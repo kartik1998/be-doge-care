@@ -13,6 +13,16 @@ class JobController {
     }
   }
 
+  static async getJob(req, res) {
+    const { id: jobId } = req.params;
+    try {
+      const job = await JobService.getJob(jobId);
+      return out.success(res, codes.SUCCESS, job);
+    } catch (err) {
+      return out.error(res, err.code, err.message);
+    }
+  }
+
   // sitter places a bid / let's the job creator know that he/she is available to do the job
   static async placeJobBid(req, res) {
     const { sitterId, jobId } = req.body;

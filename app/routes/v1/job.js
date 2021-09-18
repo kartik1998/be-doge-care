@@ -8,6 +8,7 @@ const {
 router.post('/', inputValidationMiddleware(createJobSchema), JobController.createJob);
 router.put('/', inputValidationMiddleware(updateJobSchema), JobController.updateJobState);
 router.get('/', JobController.getJobs);
+router.get('/:id', JobController.getJob);
 router.post('/selectSitter', inputValidationMiddleware(selectSitterSchema), JobController.selectSitter);
 router.post('/placeBid', inputValidationMiddleware(placeJobBidSchema), JobController.placeJobBid);
 

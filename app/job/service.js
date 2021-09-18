@@ -9,6 +9,15 @@ class JobService {
     return Job.find({ state });
   }
 
+  static async getJob(jobId) {
+    try {
+      const job = await Job.findOne({ _id: jobId });
+      return job;
+    } catch (err) {
+      return throwError(codes.NOTFOUND, `job with id ${jobId} not found`);
+    }
+  }
+
   static async placeJobBid(sitterId, jobId) {
     const data = await Promise.all([Job.findOne({ _id: jobId }), User.findOne({ _id: sitterId })]);
     const job = data[0];
