@@ -40,4 +40,10 @@ const JobSchema = new mongoose.Schema({
   },
 });
 
+JobSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.__v;
+  return obj;
+};
+
 module.exports = mongoose.model('Job', JobSchema);
