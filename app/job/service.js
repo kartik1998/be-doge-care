@@ -20,7 +20,7 @@ class JobService {
     return job;
   }
 
-  static async updateJobState(state, jobId) {
+  static async updateJobState(state, jobId, creatorId) {
     let job;
     try {
       job = await Job.findOne({ _id: jobId });
@@ -29,6 +29,8 @@ class JobService {
     }
     if (!job) return throwError(codes.NOTFOUND, `job with id: ${jobId} not found`);
     const jobState = job.state.toString();
+    const jobCreatorId = job.creatorId.toString();
+    if (creatorId !== jobCreatorId) return throwError(codes.INVALIDREQ, 'only job creator can change the job state');
     if (jobState === 'completed' || jobState === 'cancelled') {
       return throwError(codes.INVALIDREQ, `can't change ${state} state`);
     }

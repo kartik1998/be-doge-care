@@ -25,9 +25,9 @@ class JobController {
   }
 
   static async updateJobState(req, res) {
-    const { state, jobId } = req.body;
+    const { state, jobId, creatorId } = req.body;
     try {
-      const job = await JobService.updateJobState(state, jobId);
+      const job = await JobService.updateJobState(state, jobId, creatorId);
       return out.success(res, codes.SUCCESS, job);
     } catch (err) {
       return out.error(res, err.code, err.message);

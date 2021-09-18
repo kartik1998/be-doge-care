@@ -15,6 +15,7 @@ const createJobSchema = Joi.object({
 const updateJobSchema = Joi.object({
   state: Joi.string().valid('active', 'completed', 'cancelled').required(),
   jobId: Joi.string().required(),
+  creatorId: Joi.string().required(),
 });
 
 const selectSitterSchema = Joi.object({
@@ -28,5 +29,9 @@ const placeJobBidSchema = Joi.object({
 });
 
 module.exports = {
-  userRegistrationSchema, createJobSchema, updateJobSchema, selectSitterSchema, placeJobBidSchema,
+  userRegistrationSchema,
+  createJobSchema,
+  updateJobSchema,
+  selectSitterSchema,
+  placeJobBidSchema,
 };
