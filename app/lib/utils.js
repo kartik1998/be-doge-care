@@ -1,5 +1,17 @@
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET, JWT_EXPIRY } = require('nconf').get();
 
 const computeSHA256Hash = (plainText) => crypto.createHmac('sha256', plainText).digest('hex');
 
-module.exports = { computeSHA256Hash };
+const computeJwtToken = (data) => jwt.sign({ data }, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+
+const decodeJwtToken = (token) => {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (err) {
+    return err;
+  }
+};
+
+module.exports = { computeSHA256Hash, computeJwtToken, decodeJwtToken };
