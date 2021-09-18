@@ -34,7 +34,9 @@ class JobService {
       if (!job.sitterBids.includes(sitterId)) return throwError(codes.NOTALLOWED, `${sitterId} has not placed a bid to be the sitter for the job`);
       job.state = 'sitter_selected';
       job.selectedSitterId = sitter._id; // eslint-disable-line no-underscore-dangle
-      await job.save();
+      await job.save(); // update job with sitter id
+      sitter.sitterJobs.push(jobId);
+      await sitter.save(); // add job in sitter's sitterJobs array
       return job;
     } catch (err) {
       return throwError(codes.NOTFOUND, err.message);
