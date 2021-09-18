@@ -1,4 +1,4 @@
-const { computeSHA256Hash, decodeJwtToken, throwError } = require('@lib/utils');
+const { computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken } = require('@lib/utils');
 const codes = require('@lib/statusCodes');
 const User = require('./model');
 
@@ -11,19 +11,20 @@ class UserService {
     const data = decodeJwtToken(token);
     if (data instanceof Error) return throwError(codes.UNAUTHORISED, data.message);
     const { userName } = data.data;
-    if (!userName) return throwError(codes.NOTFOUND, 'malformed jwt');
+    if (!userName) return throwError(codes.NOTFOUND, 'username absent in decoded jwt');
     const user = await User.findOne({ userName }).select('-password').exec();
     if (!user) return throwError(codes.NOTFOUND, `${userName} not found`);
-    return user;
+    return { user };
   }
 
   static async loginViaCredentials(userName, password) {
     const user = await User.findOne({ userName });
     if (!user) return throwError(codes.NOTFOUND, `${userName} doesn't exist.`);
-    if (computeSHA256Hash(password) !== user.password) return throwError(codes.UNAUTHORISED, `invalid password for ${userName}`);
+    if (computeSHA256Hash(password) !== user.password)
+      return throwError(codes.UNAUTHORISED, `invalid password for ${userName}`);
     const response = user.toJSON();
     delete response.password;
-    return response;
+    return { user: response, token: computeJwtToken({ userName }) };
   }
 }
 
