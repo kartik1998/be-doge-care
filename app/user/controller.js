@@ -18,6 +18,16 @@ class UserController {
     }
   }
 
+  static async getUser(req, res) {
+    const { id: userId } = req.params;
+    try {
+      const user = await UserService.getUser(userId);
+      return out.success(res, codes.SUCCESS, user);
+    } catch (err) {
+      return out.error(res, err.code, err.message);
+    }
+  }
+
   static async updateUserDetails(req, res) {
     const {
       firstName, lastName, address, email, password,

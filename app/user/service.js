@@ -19,6 +19,15 @@ class UserService {
     return resUser;
   }
 
+  static async getUser(userId) {
+    try {
+      const user = await User.findOne({ _id: userId });
+      return user;
+    } catch (err) {
+      return throwError(codes.NOTFOUND, `user with id ${userId} not found`);
+    }
+  }
+
   static async updateUserDetails(firstName, lastName, address, email, authToken, password) {
     if (!authToken) return throwError(codes.INVALIDREQ, 'auth token not found');
     const data = decodeJwtToken(authToken);
