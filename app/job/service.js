@@ -61,6 +61,7 @@ class JobService {
   }
 
   static async selectSitter(jobId, sitterId) {
+    // TODO: add authentication
     try {
       const data = await Promise.all([Job.findOne({ _id: jobId }), User.findOne({ _id: sitterId })]);
       const job = data[0];
