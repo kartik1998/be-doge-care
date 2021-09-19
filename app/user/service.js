@@ -1,6 +1,4 @@
-const {
-  computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken,
-} = require('@lib/utils');
+const { computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken } = require('@lib/utils');
 const codes = require('@lib/statusCodes');
 const User = require('./model');
 
@@ -20,12 +18,9 @@ class UserService {
   }
 
   static async getUser(userId) {
-    try {
-      const user = await User.findOne({ _id: userId });
-      return user;
-    } catch (err) {
-      return throwError(codes.NOTFOUND, `user with id ${userId} not found`);
-    }
+    const user = await User.findOne({ _id: userId });
+    if (!user) throwError(codes.NOTFOUND, `user with id ${userId} not found`);
+    return user;
   }
 
   static async updateUserDetails(firstName, lastName, address, email, authToken, password) {
@@ -60,7 +55,8 @@ class UserService {
   static async loginViaCredentials(email, password) {
     const user = await User.findOne({ email });
     if (!user) return throwError(codes.NOTFOUND, `${email} doesn't exist.`);
-    if (computeSHA256Hash(password) !== user.password) return throwError(codes.UNAUTHORISED, `invalid password for ${email}`);
+    if (computeSHA256Hash(password) !== user.password)
+      return throwError(codes.UNAUTHORISED, `invalid password for ${email}`);
     const response = user.toJSON();
     delete response.password;
     return { user: response, token: computeJwtToken({ email }) };

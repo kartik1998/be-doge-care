@@ -5,9 +5,7 @@ const UserService = require('./service');
 
 class UserController {
   static async registerUser(req, res) {
-    const {
-      firstName, lastName, address, email, password, verificationDetails,
-    } = req.body;
+    const { firstName, lastName, address, email, password, verificationDetails } = req.body;
     try {
       const user = await UserService.registerUser(firstName, lastName, address, email, password, verificationDetails);
       return out.success(res, codes.CREATED, { user, token: utils.computeJwtToken({ email: user.email }) });
@@ -29,9 +27,7 @@ class UserController {
   }
 
   static async updateUserDetails(req, res) {
-    const {
-      firstName, lastName, address, email, password,
-    } = req.body;
+    const { firstName, lastName, address, email, password } = req.body;
     const { authorization: authToken } = req.headers;
     try {
       const user = await UserService.updateUserDetails(firstName, lastName, address, email, authToken, password);

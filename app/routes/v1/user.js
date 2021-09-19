@@ -5,7 +5,7 @@ const { userRegistrationSchema, userLoginSchema, userUpdationSchema } = require(
 
 router.post('/', inputValidationMiddleware(userRegistrationSchema), UserController.registerUser);
 router.put('/', inputValidationMiddleware(userUpdationSchema), UserController.updateUserDetails);
-router.get('/:id', UserController.getUser);
+router.get('/fetch/:id', UserController.getUser);
 router.get('/login', UserController.loginViaJwtToken);
 router.post('/login', inputValidationMiddleware(userLoginSchema), UserController.loginViaCredentials);
 
