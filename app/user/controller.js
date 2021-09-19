@@ -20,12 +20,12 @@ class UserController {
 
   static async updateUserDetails(req, res) {
     const {
-      firstName, lastName, address, email,
+      firstName, lastName, address, email, password,
     } = req.body;
     const { authorization: authToken } = req.headers;
     try {
-      const user = await UserService.updateUserDetails(firstName, lastName, address, email, authToken);
-      return out.success(res, codes.SUCCESS, user);
+      const user = await UserService.updateUserDetails(firstName, lastName, address, email, authToken, password);
+      return out.success(res, codes.SUCCESS, { user, token: utils.computeJwtToken({ email: email || user.email }) });
     } catch (err) {
       return out.error(res, err.code, err.message);
     }

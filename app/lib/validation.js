@@ -12,6 +12,14 @@ const userRegistrationSchema = Joi.object({
   },
 }).strict();
 
+const userUpdationSchema = Joi.object({
+  firstName: Joi.string().min(2),
+  lastName: Joi.string().min(3),
+  email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'co'] } }),
+  address: Joi.string().min(3),
+  password: Joi.string().min(6),
+}).strict();
+
 const userLoginSchema = Joi.object({
   email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'co'] } }),
   password: Joi.string().min(6).required(),
@@ -46,4 +54,5 @@ module.exports = {
   selectSitterSchema,
   placeJobBidSchema,
   userLoginSchema,
+  userUpdationSchema,
 };

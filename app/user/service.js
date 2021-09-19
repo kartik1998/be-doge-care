@@ -1,4 +1,6 @@
-const { computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken } = require('@lib/utils');
+const {
+  computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken,
+} = require('@lib/utils');
 const codes = require('@lib/statusCodes');
 const User = require('./model');
 
@@ -17,7 +19,7 @@ class UserService {
     return resUser;
   }
 
-  static async updateUserDetails(firstName, lastName, address, email, authToken) {
+  static async updateUserDetails(firstName, lastName, address, email, authToken, password) {
     if (!authToken) return throwError(codes.INVALIDREQ, 'auth token not found');
     const data = decodeJwtToken(authToken);
     if (data instanceof Error) return throwError(codes.UNAUTHORISED, data.message);
@@ -28,6 +30,8 @@ class UserService {
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
     user.address = address || user.address;
+    user.email = email || user.email;
+    if (password) user.password = computeSHA256Hash(password);
     await user.save();
     const resUser = user.toJSON();
     delete resUser.password;
@@ -47,8 +51,7 @@ class UserService {
   static async loginViaCredentials(email, password) {
     const user = await User.findOne({ email });
     if (!user) return throwError(codes.NOTFOUND, `${email} doesn't exist.`);
-    if (computeSHA256Hash(password) !== user.password)
-      return throwError(codes.UNAUTHORISED, `invalid password for ${email}`);
+    if (computeSHA256Hash(password) !== user.password) return throwError(codes.UNAUTHORISED, `invalid password for ${email}`);
     const response = user.toJSON();
     delete response.password;
     return { user: response, token: computeJwtToken({ email }) };
