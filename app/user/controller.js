@@ -5,7 +5,9 @@ const UserService = require('./service');
 
 class UserController {
   static async registerUser(req, res) {
-    const { firstName, lastName, address, email, password, verificationDetails } = req.body;
+    const {
+      firstName, lastName, address, email, password, verificationDetails,
+    } = req.body;
     try {
       const user = await UserService.registerUser(firstName, lastName, address, email, password, verificationDetails);
       return out.success(res, codes.CREATED, { user, token: utils.computeJwtToken({ email: user.email }) });
@@ -16,11 +18,24 @@ class UserController {
     }
   }
 
-  static async loginViaJwtToken(req, res) {
-    const { authorization: authtoken } = req.headers;
-    if (!authtoken) return out.error(res, codes.INVALIDREQ, 'no authorization token provided');
+  static async updateUserDetails(req, res) {
+    const {
+      firstName, lastName, address, email,
+    } = req.body;
+    const { authorization: authToken } = req.headers;
     try {
-      const user = await UserService.loginViaJwtToken(authtoken);
+      const user = await UserService.updateUserDetails(firstName, lastName, address, email, authToken);
+      return out.success(res, codes.SUCCESS, user);
+    } catch (err) {
+      return out.error(res, err.code, err.message);
+    }
+  }
+
+  static async loginViaJwtToken(req, res) {
+    const { authorization: authToken } = req.headers;
+    if (!authToken) return out.error(res, codes.INVALIDREQ, 'no authorization token provided');
+    try {
+      const user = await UserService.loginViaJwtToken(authToken);
       return out.success(res, codes.SUCCESS, user);
     } catch (err) {
       return out.error(res, err.code, err.message);

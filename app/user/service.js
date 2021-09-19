@@ -17,13 +17,30 @@ class UserService {
     return resUser;
   }
 
+  static async updateUserDetails(firstName, lastName, address, email, authToken) {
+    if (!authToken) return throwError(codes.INVALIDREQ, 'auth token not found');
+    const data = decodeJwtToken(authToken);
+    if (data instanceof Error) return throwError(codes.UNAUTHORISED, data.message);
+    const { email: userEmail } = data.data;
+    if (!userEmail) return throwError(codes.NOTFOUND, 'email absent in decoded jwt');
+    const user = await User.findOne({ email: userEmail });
+    if (!user) return throwError(codes.NOTFOUND, 'user extracted from jwt not found');
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.address = address || user.address;
+    await user.save();
+    const resUser = user.toJSON();
+    delete resUser.password;
+    return resUser;
+  }
+
   static async loginViaJwtToken(token) {
     const data = decodeJwtToken(token);
     if (data instanceof Error) return throwError(codes.UNAUTHORISED, data.message);
     const { email } = data.data;
     if (!email) return throwError(codes.NOTFOUND, 'email absent in decoded jwt');
     const user = await User.findOne({ email }).select('-password').exec();
-    if (!email) return throwError(codes.NOTFOUND, `${email} not found`);
+    if (!user) return throwError(codes.NOTFOUND, `${email} not found`);
     return { user };
   }
 
