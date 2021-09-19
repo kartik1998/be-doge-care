@@ -5,12 +5,12 @@ const UserService = require('./service');
 
 class UserController {
   static async registerUser(req, res) {
-    const { userName, name, password } = req.body;
+    const { firstName, lastName, address, email, password, verificationDetails } = req.body;
     try {
-      const user = await UserService.registerUser(userName, name, password);
-      return out.success(res, codes.CREATED, { token: utils.computeJwtToken({ userName: user.userName }) });
+      const user = await UserService.registerUser(firstName, lastName, address, email, password, verificationDetails);
+      return out.success(res, codes.CREATED, { user, token: utils.computeJwtToken({ email: user.email }) });
     } catch (err) {
-      if (err.code === 11000) return out.error(res, codes.INVALIDREQ, 'username already exists');
+      if (err.code === 11000) return out.error(res, codes.INVALIDREQ, 'email already exists');
       console.log(err);
       return out.error(res, codes.INTERNALERR, err);
     }
@@ -28,9 +28,9 @@ class UserController {
   }
 
   static async loginViaCredentials(req, res) {
-    const { userName, password } = req.body;
+    const { email, password } = req.body;
     try {
-      const user = await UserService.loginViaCredentials(userName, password);
+      const user = await UserService.loginViaCredentials(email, password);
       return out.success(res, codes.SUCCESS, user);
     } catch (err) {
       return out.error(res, err.code, err.message);

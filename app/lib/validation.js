@@ -1,10 +1,21 @@
 const Joi = require('joi');
 
 const userRegistrationSchema = Joi.object({
-  userName: Joi.string().min(3).required(),
-  name: Joi.string().min(3).required(),
+  firstName: Joi.string().min(2).required(),
+  lastName: Joi.string().min(3).required(),
+  email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'co'] } }),
+  address: Joi.string().min(3).required(),
   password: Joi.string().min(6).required(),
+  verificationDetails: {
+    driversLicense: Joi.string().required(),
+    referenceEmail: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'co'] } }),
+  },
 }).strict();
+
+const userLoginSchema = Joi.object({
+  email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'co'] } }),
+  password: Joi.string().min(6).required(),
+});
 
 const createJobSchema = Joi.object({
   userId: Joi.string().min(3).required(),
@@ -34,4 +45,5 @@ module.exports = {
   updateJobSchema,
   selectSitterSchema,
   placeJobBidSchema,
+  userLoginSchema,
 };
