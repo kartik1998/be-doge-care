@@ -8,7 +8,6 @@
 require('module-alias/register');
 const http = require('http');
 const { app } = require('../index');
-const chalk = require('chalk');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -72,7 +71,7 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `'pipe ${addr}` : `'port ${addr.port}`;
-  console.log(chalk.cyanBright(`Listening on ${bind}`)); // debug here
+  console.log(`Listening on ${bind}`); // debug here
 }
 
 function shutDown() {

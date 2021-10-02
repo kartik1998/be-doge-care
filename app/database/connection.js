@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { MONGO_URI } = require('nconf').get();
-const chalk = require('chalk');
 
 const establishMongoDbConnection = async () => {
   try {
@@ -8,7 +7,7 @@ const establishMongoDbConnection = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(chalk.green(`MongoDB connected:: ${conn.connection.host}`));
+    console.log(`MongoDB connected:: ${conn.connection.host}`);
   } catch (error) {
     console.log(error);
     process.exit(1);
