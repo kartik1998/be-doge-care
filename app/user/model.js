@@ -22,6 +22,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publicKey: {
+    type: String,
+    required: true,
+  },
+  privateKey: {
+    type: String,
+    required: true,
+  },
   verificationDetails: {
     driversLicense: {
       type: String,

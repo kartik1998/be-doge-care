@@ -1,11 +1,17 @@
 const {
-  computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken,
+  computeSHA256Hash, decodeJwtToken, throwError, computeJwtToken, getSolanaCredentials,
 } = require('@lib/utils');
 const codes = require('@lib/statusCodes');
 const User = require('./model');
 
 class UserService {
   static async registerUser(firstName, lastName, address, email, password, verificationDetails) {
+    let credentials = null;
+    try {
+      credentials = await getSolanaCredentials();
+    } catch(err) {
+      throwError(codes.INTERNALERR, `unable to create credentials for user`)
+    }
     const user = await User.create({
       firstName,
       lastName,
@@ -13,6 +19,7 @@ class UserService {
       email,
       password: computeSHA256Hash(password),
       verificationDetails,
+      ...credentials,
     });
     const resUser = user.toJSON();
     delete resUser.password;

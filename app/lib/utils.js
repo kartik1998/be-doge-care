@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET, JWT_EXPIRY } = require('nconf').get();
+const axios = require('axios');
+const { JWT_SECRET, JWT_EXPIRY, SOLANA_KEY_GEN_URL } = require('nconf').get();
 
 const computeSHA256Hash = (plainText) => crypto.createHmac('sha256', plainText).digest('hex');
 
@@ -20,6 +21,20 @@ const throwError = (code = 500, message = 'internal server error') => {
   throw err;
 };
 
+const getSolanaCredentials = async () => {
+  try {
+    const res = await axios.get(SOLANA_KEY_GEN_URL);
+    return res.data.result;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
 module.exports = {
-  computeSHA256Hash, computeJwtToken, decodeJwtToken, throwError,
+  computeSHA256Hash,
+  computeJwtToken,
+  decodeJwtToken,
+  throwError,
+  getSolanaCredentials,
 };
