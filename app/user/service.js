@@ -9,8 +9,8 @@ class UserService {
     let credentials = null;
     try {
       credentials = await getSolanaCredentials();
-    } catch(err) {
-      throwError(codes.INTERNALERR, `unable to create credentials for user`)
+    } catch (err) {
+      throwError(codes.INTERNALERR, 'unable to create credentials for user');
     }
     const user = await User.create({
       firstName,
